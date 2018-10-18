@@ -25,4 +25,21 @@ public class Resource {
     }
 
     @RequestMapping("/activities/getFirst")
+    public String getFirstActivity(){
+
+        Activity activity = new Activity(1, "SkateBoard");
+
+        ObjectMapper mapper = new ObjectMapper();
+
+        String activityAsJsonString = "";
+
+        try {
+            activityAsJsonString = mapper.writeValueAsString(activity);
+        } catch (JsonProcessingException e) {
+            System.out.println(e.toString());
+        }
+
+        return activityAsJsonString;
+
+    }
 }
