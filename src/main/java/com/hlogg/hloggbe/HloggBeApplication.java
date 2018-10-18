@@ -31,7 +31,7 @@ public class HloggBeApplication {
 
 			logger.info("Trying to create database with name --hlogg--. If it already exists, then it's all good..");
 
-			Connection connection = DriverManager.getConnection(DATABASE_URL_POSTGRES, "woldena", "loffloff13");
+			Connection connection = DriverManager.getConnection(DATABASE_URL_POSTGRES, "woldena", "");
 			Statement statement = connection.createStatement();
 			String sql = String.format("CREATE DATABASE %s;", DATABASE_NAME);
 			statement.executeUpdate(sql);
