@@ -1,3 +1,4 @@
+target/
 hlogg-be.zip
 .idea
 hlogg-be.iml
@@ -5,3 +6,4 @@ hlogg-be.iml
 
 strategi.xlsx
 ~$strategi.xlsx
+target/**
