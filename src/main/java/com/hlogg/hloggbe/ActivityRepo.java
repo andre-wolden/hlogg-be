@@ -20,7 +20,7 @@ public class ActivityRepo {
         ArrayList<Activity> activitiesList = new ArrayList<>();
 
         try {
-            Connection connection = DriverManager.getConnection(DATABASE_URL+DATABASE_NAME);
+                Connection connection = DriverManager.getConnection(DATABASE_URL+DATABASE_NAME);
 
             Statement statement = connection.createStatement();
             String query = "SELECT * FROM activities";
@@ -45,5 +45,32 @@ public class ActivityRepo {
 
 
         return activitiesList;
+    }
+
+    public Activity getActivityById(int activityId){
+        try {
+            Connection connection = DriverManager.getConnection(DATABASE_URL+DATABASE_NAME);
+            Statement statement = connection.createStatement();
+            String query = "SELECT * FROM activities WHERE activity_id = " + activityId + ";";
+            ResultSet resultSet = statement.executeQuery(query);
+
+            Activity activity = new Activity();
+
+            while(resultSet.next()){
+                activity.setActivityId(resultSet.getInt(1));
+                activity.setActivityDescription(resultSet.getString(2));
+            }
+
+            resultSet.close();
+            statement.close();
+            connection.close();
+
+            return activity;
+
+        } catch (SQLException e) {
+            System.out.println(e.toString());
+        }
+
+        return null;
     }
 }

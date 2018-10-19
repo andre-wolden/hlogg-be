@@ -4,6 +4,8 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import java.sql.*;
+import java.time.LocalDate;
+import java.time.temporal.WeekFields;
 import java.util.logging.Logger;
 
 @SpringBootApplication
@@ -12,7 +14,7 @@ public class HloggBeApplication {
 	public static final String DATABASE_URL_POSTGRES = "jdbc:postgresql://localhost:5432/postgres";
 	public static final String DATABASE_URL = "jdbc:postgresql://localhost:5432/";
 	public static final String DATABASE_NAME = "hlogg";
-	public static final String TABLE_NAME_ACTIVITY_RECORDS = "activity_records";
+	public static final String TABLE_NAME_records = "records";
 
 
 	public static void main(String[] args) {
@@ -22,6 +24,7 @@ public class HloggBeApplication {
 		System.out.println("dbIsCreated: " + dbIsCreated);
 		boolean tablesIsCreated = createTablesIfNotExist();
         boolean activitiesIsInserted = insertActivities();
+
 	}
 
 	private static boolean createDbIfNotExist() {
@@ -72,11 +75,11 @@ public class HloggBeApplication {
 
 			Statement statement2 = connection.createStatement();
 
-			String sql2 = "CREATE TABLE activity_records (" +
-					"activity_record_id SERIAL PRIMARY KEY," +
+			String sql2 = "CREATE TABLE records (" +
+					"record_id SERIAL PRIMARY KEY," +
 					"date DATE," +
 					"week INTEGER," +
-					"activity INTEGER REFERENCES activities(activity_id)" +
+					"activity_id INTEGER REFERENCES activities(activity_id)" +
 					");";
 
 			statement2.execute(sql2);

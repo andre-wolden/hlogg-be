@@ -13,6 +13,9 @@ public class Activity {
     public int ActivityId;
     public String ActivityDescription;
 
+    public Activity() {
+    }
+
     public Activity(int activityId, String activityDescription) {
         ActivityId = activityId;
         ActivityDescription = activityDescription;
