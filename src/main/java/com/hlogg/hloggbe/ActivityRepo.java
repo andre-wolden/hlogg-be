@@ -17,7 +17,7 @@ public class ActivityRepo {
 
     public ArrayList<Activity> getAllActivities(){
 
-        List<String> activitiesList = new ArrayList<>();
+        ArrayList<Activity> activitiesList = new ArrayList<>();
 
         try {
             Connection connection = DriverManager.getConnection(DATABASE_URL+DATABASE_NAME);
@@ -27,7 +27,12 @@ public class ActivityRepo {
             ResultSet resultSet = statement.executeQuery(query);
 
             while (resultSet.next()){
-                activitiesList.add(resultSet.getString(2));
+
+                Activity activity = new Activity(
+                        resultSet.getInt(1),
+                        resultSet.getString(2)
+                );
+                activitiesList.add(activity);
             }
 
             resultSet.close();
@@ -39,17 +44,6 @@ public class ActivityRepo {
         }
 
 
-
-        ArrayList<Activity> activities = new ArrayList<>();
-
-        Activity activity1 = new Activity(1, "Skate");
-        Activity activity2 = new Activity(2, "333");
-        Activity activity3 = new Activity(3, "Koreansk");
-
-        activities.add(activity1);
-        activities.add(activity2);
-        activities.add(activity3);
-
-        return activities;
+        return activitiesList;
     }
 }
