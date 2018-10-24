@@ -8,7 +8,8 @@ import java.util.ArrayList;
 @RestController
 public class RecordResource {
 
-    @RequestMapping(value = "/records/get_all", method = RequestMethod.GET)
+    @CrossOrigin
+    @RequestMapping(value = "/records/all", method = RequestMethod.GET)
     public ArrayList<Record> getAllRecords(){
 
         RecordRepo recordRepo = new RecordRepo();
