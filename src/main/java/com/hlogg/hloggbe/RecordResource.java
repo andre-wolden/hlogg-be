@@ -27,6 +27,7 @@ public class RecordResource {
         return record;
     }
 
+    @CrossOrigin
     @RequestMapping(value = "/records/new", method = RequestMethod.POST)
     public Record saveNewRecord(@RequestBody JsonRecord jsonRecord){
 
@@ -42,6 +43,14 @@ public class RecordResource {
 
 
         return savedRecord;
+    }
+
+    @CrossOrigin
+    @RequestMapping(value = "/records/delete/{record_id}", method = RequestMethod.DELETE)
+    public boolean deleteRecord(@PathVariable int record_id){
+
+        RecordRepo recordRepo = new RecordRepo();
+        return recordRepo.deleteRecordById(record_id);
     }
 
 
