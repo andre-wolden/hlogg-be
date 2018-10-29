@@ -129,11 +129,14 @@ public class RecordRepo {
     }
 
     public boolean deleteRecordById(int record_id) {
+
+        System.out.println(record_id);
+
         try {
             Connection connection = DriverManager.getConnection(DATABASE_URL+DATABASE_NAME);
             Statement statement = connection.createStatement();
-            String query = "DELETE * FROM records WHERE record_id = " + record_id + ";";
-            statement.executeQuery(query);
+            String sql = "DELETE FROM records WHERE records.record_id = " + record_id + ";";
+            statement.executeUpdate(sql);
 
             statement.close();
             connection.close();
@@ -141,6 +144,7 @@ public class RecordRepo {
             return true;
 
         } catch (SQLException e) {
+
             return false;
         }
     }
