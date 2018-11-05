@@ -80,6 +80,7 @@ public class RecordRepo {
                 Record record = new Record();
                 record.setId(resultSet.getInt(1));
                 record.setDate(resultSet.getDate(2).toLocalDate());
+                record.setWeek(resultSet.getInt(3));
 
                 Activity activity = activityRepo.getActivityById(resultSet.getInt(4));
                 record.setActivity(activity);
@@ -123,25 +124,31 @@ public class RecordRepo {
             System.out.println("DET VAR DENNE JA" + e.toString());
         }
 
-        System.out.println("Record ID: " + record.getId());
+        System.out.println("Get record by ID: " + record.getId());
 
         return record;
     }
 
     public boolean deleteRecordById(int record_id) {
 
-        System.out.println(record_id);
+        System.out.println("Will try to delete record with id: " + record_id);
 
         try {
             Connection connection = DriverManager.getConnection(DATABASE_URL+DATABASE_NAME);
             Statement statement = connection.createStatement();
             String sql = "DELETE FROM records WHERE records.record_id = " + record_id + ";";
-            statement.executeUpdate(sql);
+            final int i = statement.executeUpdate(sql);
 
             statement.close();
             connection.close();
 
-            return true;
+            System.out.println(i + " records with record_id " + record_id + " deleted.");
+
+            if (i == 1){
+                return true;
+            } else {
+                return false;
+            }
 
         } catch (SQLException e) {
 
