@@ -46,6 +46,25 @@ public class RecordResource {
     }
 
     @CrossOrigin
+    @RequestMapping(value = "/records/new_with_date", method = RequestMethod.POST)
+    public Record saveNewRecordWithDate(@RequestBody JsonRecord jsonRecord){
+
+        ActivityRepo activityRepo = new ActivityRepo();
+        Activity activity = activityRepo.getActivityById(jsonRecord.getActivity_id());
+
+        Record record = new Record();
+        record.setActivity(activity);
+        record.setDate(jsonRecord.getDate());
+
+
+        RecordRepo recordRepo = new RecordRepo();
+        Record savedRecord = recordRepo.saveNewRecord(record);
+
+
+        return savedRecord;
+    }
+
+    @CrossOrigin
     @RequestMapping(value = "/records/delete/{record_id}", method = RequestMethod.DELETE)
     public boolean deleteRecord(@PathVariable int record_id){
 
