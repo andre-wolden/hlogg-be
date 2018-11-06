@@ -13,15 +13,16 @@ public class DateResource {
 
     @CrossOrigin
     @RequestMapping(value = "/dates", method = RequestMethod.GET)
-    public List<LocalDate> getDates(){
+    public List<DateThing> getDates(){
 
         LocalDate startDate = LocalDate.of(2018, 01, 01);
         LocalDate endDate = LocalDate.now();
 
         List<LocalDate> datesBetween = DateHelper.getDatesBetweenUsingJava8(startDate, endDate);
 
+        List<DateThing> dates = DateHelper.localDateToDateThing(datesBetween);
 
-        return datesBetween;
+        return dates;
     }
 
 }
