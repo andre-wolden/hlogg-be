@@ -24,7 +24,6 @@ public class HloggBeApplication {
 		System.out.println("dbIsCreated: " + dbIsCreated);
 		boolean tablesIsCreated = createTablesIfNotExist();
         boolean activitiesIsInserted = insertActivities();
-
 	}
 
 	private static boolean createDbIfNotExist() {

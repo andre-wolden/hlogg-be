@@ -15,12 +15,17 @@ public class DateResource {
     @RequestMapping(value = "/dates", method = RequestMethod.GET)
     public List<DateThing> getDates(){
 
-        LocalDate startDate = LocalDate.of(2018, 01, 01);
+        LocalDate startDate = DateHelper.getOldestDate();
         LocalDate endDate = LocalDate.now();
 
         List<LocalDate> datesBetween = DateHelper.getDatesBetweenUsingJava8(startDate, endDate);
 
-        List<DateThing> dates = DateHelper.localDateToDateThing(datesBetween);
+        DateThing today = new DateThing(LocalDate.now());
+
+        List<DateThing> dates = DateHelper
+                .localDateToDateThing(datesBetween);
+
+        dates.add(today);
 
         return dates;
     }

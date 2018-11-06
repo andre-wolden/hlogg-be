@@ -3,9 +3,11 @@ package com.hlogg.hloggbe;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
+import java.util.stream.Stream;
 
 public class DateHelper {
 
@@ -23,5 +25,14 @@ public class DateHelper {
             list.add(new DateThing(localDate));
         }
         return list;
+    }
+
+    public static LocalDate getOldestDate(){
+
+        RecordRepo recordRepo = new RecordRepo();
+        ArrayList<Record> allRecords = recordRepo.getAllRecords();
+        Stream<Record> stream = allRecords.stream();
+        Record oldest = stream.min(Comparator.comparing(record -> record.getDate())).get();
+        return oldest.getDate();
     }
 }

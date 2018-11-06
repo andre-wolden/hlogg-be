@@ -56,9 +56,13 @@ public class RecordResource {
         record.setActivity(activity);
         record.setDate(jsonRecord.getDate());
 
+        System.out.println("record date before save: " + record.getDate().toString());
+
 
         RecordRepo recordRepo = new RecordRepo();
         Record savedRecord = recordRepo.saveNewRecord(record);
+
+        System.out.println("record date after save: " + savedRecord.getDate().toString());
 
 
         return savedRecord;

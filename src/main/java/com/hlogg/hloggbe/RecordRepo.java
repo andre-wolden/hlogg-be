@@ -25,12 +25,13 @@ public class RecordRepo {
             String sql = String.format("INSERT INTO records (date, week, activity_id)" +
                     "VALUES (?,?,?);");
 
-            Date date = new Date(System.currentTimeMillis());
+            LocalDate date = record.getDate();
+            Date dateFormatted = Date.valueOf(date);
 
             PreparedStatement preparedStatement = connection.prepareStatement(sql,
                     Statement.RETURN_GENERATED_KEYS);
 
-            preparedStatement.setDate(1, date);
+            preparedStatement.setDate(1, dateFormatted);
             preparedStatement.setInt(2, week);
             preparedStatement.setInt(3, record.getActivity().getActivityId());
 
