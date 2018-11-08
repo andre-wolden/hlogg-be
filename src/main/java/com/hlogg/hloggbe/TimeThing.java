@@ -13,15 +13,17 @@ import java.time.temporal.WeekFields;
 )
 public class TimeThing {
 
-    private int Year;
-    private String Month;
-    private int Week;
-    private String Day;
+    private int year;
+    private String month;
+    private int week;
+    private String day;
+    private int dayOfMonth;
 
     public TimeThing() {
-        this.Year = LocalDate.now().getYear();
-        this.Month = LocalDate.now().getMonth().toString();
-        this.Week = LocalDate.now().get(WeekFields.ISO.weekOfYear());
-        this.Day = LocalDate.now().getDayOfWeek().toString();
+        this.year = LocalDate.now().getYear();
+        this.month = LocalDate.now().getMonth().toString();
+        this.week = LocalDate.now().get(WeekFields.ISO.weekOfYear());
+        this.day = LocalDate.now().getDayOfWeek().toString();
+        this.dayOfMonth = LocalDate.now().getDayOfMonth();
     }
 }
