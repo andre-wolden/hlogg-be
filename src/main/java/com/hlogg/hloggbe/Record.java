@@ -20,11 +20,6 @@ public class Record {
     public Record() {
     }
 
-    public Record(Activity activity) {
-        this.activity = activity;
-        this.date = LocalDate.now();
-    }
-
     public int getId() {
         return id;
     }
