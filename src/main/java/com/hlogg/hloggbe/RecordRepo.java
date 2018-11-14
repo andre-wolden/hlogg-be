@@ -1,8 +1,5 @@
 package com.hlogg.hloggbe;
 
-import org.apache.tomcat.jni.Local;
-
-import javax.swing.plaf.nimbus.State;
 import java.sql.*;
 import java.time.LocalDate;
 import java.time.temporal.WeekFields;
@@ -12,11 +9,8 @@ public class RecordRepo {
 
     public static final String DATABASE_URL = "jdbc:postgresql://localhost:5432/";
     public static final String DATABASE_NAME = "hlogg";
-    public static final String TABLE_NAME_ACTIVITY_RECORDS = "activity_records";
-
 
     public Record saveNewRecord(Record record){
-
 
         int week = record.getDate().get(WeekFields.ISO.weekOfYear());
 

@@ -22,7 +22,13 @@ public class HloggBeApplication {
 
 		boolean dbIsCreated = createDbIfNotExist();
 		System.out.println("dbIsCreated: " + dbIsCreated);
-		boolean tablesIsCreated = createTablesIfNotExist();
+
+		boolean recordsTableIfNotExist = createRecordsTableIfNotExist();
+		boolean activitiesTableIfNotExist = createActivitiesTableIfNotExist();
+		boolean usersTableIfNotExist = createUsersTableIfNotExist();
+
+//		boolean tablesIsCreated = createTablesIfNotExist();
+
         boolean activitiesIsInserted = insertActivities();
 	}
 
@@ -53,37 +59,51 @@ public class HloggBeApplication {
 		}
 	}
 
-	private static boolean createTablesIfNotExist(){
-
-		Logger createTablesIfNotExistLogger = Logger.getLogger("createTablesIfNotExistLogger");
-
+	private static boolean createActivitiesTableIfNotExist(){
+		Logger createTablesIfNotExistLogger = Logger.getLogger("createTable");
 		try {
-			createTablesIfNotExistLogger.info("Creating tables if they don't already exist...");
+			createTablesIfNotExistLogger.info("Creating activity table");
 
 			Connection connection = DriverManager.getConnection((DATABASE_URL+DATABASE_NAME));
 
-			Statement statement1 = connection.createStatement();
-			String sql1 = "CREATE TABLE activities (" +
-                    "activity_id SERIAL PRIMARY KEY," +
-                    "activity_name VARCHAR(50) NOT NULL UNIQUE" +
-                    ");";
+			Statement statement = connection.createStatement();
+			String sql = "CREATE TABLE activities (" +
+					"activity_id SERIAL PRIMARY KEY," +
+					"activity_name VARCHAR(50) NOT NULL UNIQUE" +
+					");";
 
-			statement1.execute(sql1);
-			statement1.close();
+			statement.execute(sql);
+			statement.close();
+
+			connection.close();
+
+		} catch (SQLException sql_e){
+			System.out.println(sql_e.getMessage().toString());
+		}
+		return true;
+
+	}
+
+	private static boolean createRecordsTableIfNotExist(){
+		Logger createTablesIfNotExistLogger = Logger.getLogger("createTablesIfNotExistLogger");
+		try {
+			createTablesIfNotExistLogger.info("Creating records table");
+
+			Connection connection = DriverManager.getConnection((DATABASE_URL+DATABASE_NAME));
 
 
-			Statement statement2 = connection.createStatement();
+			Statement statement = connection.createStatement();
 
-			String sql2 = "CREATE TABLE records (" +
+			String sql = "CREATE TABLE records (" +
 					"record_id SERIAL PRIMARY KEY," +
 					"date DATE," +
 					"week INTEGER," +
 					"activity_id INTEGER REFERENCES activities(activity_id)" +
 					");";
 
-			statement2.execute(sql2);
+			statement.execute(sql);
+			statement.close();
 
-			statement2.close();
 			connection.close();
 
 		} catch (SQLException sql_e){
@@ -91,6 +111,32 @@ public class HloggBeApplication {
 		}
 		return true;
 	}
+
+	private static boolean createUsersTableIfNotExist(){
+		Logger createTablesIfNotExistLogger = Logger.getLogger("createTablesIfNotExistLogger");
+		try {
+			createTablesIfNotExistLogger.info("Creating tables if they don't already exist...");
+
+			Connection connection = DriverManager.getConnection((DATABASE_URL+DATABASE_NAME));
+
+			Statement statement = connection.createStatement();
+			String sql = "CREATE TABLE users (" +
+					"user_id SERIAL PRIMARY KEY," +
+					"user_name VARCHAR(50) NOT NULL UNIQUE," +
+					"password VARCHAR(50) NOT NULL UNIQUE" +
+					");";
+
+			statement.execute(sql);
+
+			statement.close();
+			connection.close();
+		} catch (SQLException sql_e){
+			System.out.println(sql_e.getMessage().toString());
+		}
+		return true;
+	}
+
+
 
 	private static boolean insertActivities(){
 
