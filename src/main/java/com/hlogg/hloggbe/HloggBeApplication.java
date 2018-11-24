@@ -6,19 +6,23 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import java.sql.*;
 import java.time.LocalDate;
 import java.time.temporal.WeekFields;
+import java.util.Collections;
 import java.util.logging.Logger;
 
 @SpringBootApplication
 public class HloggBeApplication {
 
 	public static final String DATABASE_URL_POSTGRES = "jdbc:postgresql://localhost:5432/postgres";
-	public static final String DATABASE_URL = "jdbc:postgresql://localhost:5432/";
+//	public static final String DATABASE_URL = "jdbc:postgresql://localhost:5432/";
+	public static final String DATABASE_URL = System.getenv("DATABASE_URL");
 	public static final String DATABASE_NAME = "hlogg";
 	public static final String TABLE_NAME_records = "records";
 
 
 	public static void main(String[] args) {
+
 		SpringApplication.run(HloggBeApplication.class, args);
+
 
 		boolean dbIsCreated = createDbIfNotExist();
 		System.out.println("dbIsCreated: " + dbIsCreated);
