@@ -10,8 +10,9 @@ import java.util.ArrayList;
 
 public class RecordRepo {
 
-    public static final String DATABASE_URL = "jdbc:postgresql://localhost:5432/";
-    public static final String DATABASE_NAME = "hlogg";
+//    public static final String DATABASE_URL = "jdbc:postgresql://localhost:5432/";
+    public static final String DATABASE_URL = System.getenv("JDBC_DATABASE_URL");
+    public static final String DATABASE_USER_NAME = "hlogg";
     public static final String TABLE_NAME_ACTIVITY_RECORDS = "activity_records";
 
 
@@ -21,7 +22,7 @@ public class RecordRepo {
         int week = record.getDate().get(WeekFields.ISO.weekOfYear());
 
         try {
-            Connection connection = DriverManager.getConnection(DATABASE_URL+DATABASE_NAME);
+            Connection connection = DriverManager.getConnection(DATABASE_URL);
             String sql = String.format("INSERT INTO records (date, week, activity_id)" +
                     "VALUES (?,?,?);");
 
@@ -71,7 +72,7 @@ public class RecordRepo {
         ArrayList<Record> records = new ArrayList<>();
 
         try {
-            Connection connection = DriverManager.getConnection(DATABASE_URL+DATABASE_NAME);
+            Connection connection = DriverManager.getConnection(DATABASE_URL);
             Statement statement = connection.createStatement();
             String query = "SELECT * FROM records;";
             ResultSet resultSet = statement.executeQuery(query);
@@ -103,7 +104,7 @@ public class RecordRepo {
         ActivityRepo activityRepo = new ActivityRepo();
 
         try {
-            Connection connection = DriverManager.getConnection(DATABASE_URL+DATABASE_NAME);
+            Connection connection = DriverManager.getConnection(DATABASE_URL);
             Statement statement = connection.createStatement();
             String query = String.format("SELECT * FROM records WHERE record_id = %d", recordId);
             ResultSet resultSet = statement.executeQuery(query);
@@ -135,7 +136,7 @@ public class RecordRepo {
         System.out.println("Will try to delete record with id: " + record_id);
 
         try {
-            Connection connection = DriverManager.getConnection(DATABASE_URL+DATABASE_NAME);
+            Connection connection = DriverManager.getConnection(DATABASE_URL);
             Statement statement = connection.createStatement();
             String sql = "DELETE FROM records WHERE records.record_id = " + record_id + ";";
             final int i = statement.executeUpdate(sql);

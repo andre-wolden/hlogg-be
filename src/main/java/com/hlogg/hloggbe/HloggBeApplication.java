@@ -14,7 +14,7 @@ public class HloggBeApplication {
 
 	public static final String DATABASE_URL_POSTGRES = "jdbc:postgresql://localhost:5432/postgres";
 //	public static final String DATABASE_URL = "jdbc:postgresql://localhost:5432/";
-	public static final String DATABASE_URL = System.getenv("DATABASE_URL");
+	public static final String DATABASE_URL = System.getenv("JDBC_DATABASE_URL");
 	public static final String DATABASE_NAME = "hlogg";
 	public static final String TABLE_NAME_records = "records";
 
@@ -22,7 +22,6 @@ public class HloggBeApplication {
 	public static void main(String[] args) {
 
 		SpringApplication.run(HloggBeApplication.class, args);
-
 
 		boolean dbIsCreated = createDbIfNotExist();
 		System.out.println("dbIsCreated: " + dbIsCreated);
@@ -37,7 +36,7 @@ public class HloggBeApplication {
 
 			logger.info("Trying to create database with name --hlogg--. If it already exists, then it's all good..");
 
-			Connection connection = DriverManager.getConnection(DATABASE_URL_POSTGRES, "woldena", "");
+			Connection connection = DriverManager.getConnection(DATABASE_URL, "woldena", "");
 			Statement statement = connection.createStatement();
 			String sql = String.format("CREATE DATABASE %s;", DATABASE_NAME);
 			statement.executeUpdate(sql);
@@ -64,7 +63,7 @@ public class HloggBeApplication {
 		try {
 			createTablesIfNotExistLogger.info("Creating tables if they don't already exist...");
 
-			Connection connection = DriverManager.getConnection((DATABASE_URL+DATABASE_NAME));
+			Connection connection = DriverManager.getConnection((DATABASE_URL));
 
 			Statement statement1 = connection.createStatement();
 			String sql1 = "CREATE TABLE activities (" +
@@ -104,7 +103,7 @@ public class HloggBeApplication {
 
         try {
             insertActivitiesLogger.info("Inserting activities into activities table");
-            Connection connection = DriverManager.getConnection(DATABASE_URL+DATABASE_NAME);
+            Connection connection = DriverManager.getConnection(DATABASE_URL);
             Statement statement = connection.createStatement();
             String sql = "SELECT * FROM activities";
             ResultSet resultSet = statement.executeQuery(sql);
@@ -121,7 +120,7 @@ public class HloggBeApplication {
         if (activitiesTableIsEmpty){
             try {
                 insertActivitiesLogger.info("Inserting activities into activities table");
-                Connection connection = DriverManager.getConnection(DATABASE_URL+DATABASE_NAME);
+                Connection connection = DriverManager.getConnection(DATABASE_URL);
                 Statement statement = connection.createStatement();
                 String sql = "INSERT INTO activities " +
                         "(activity_name)" +

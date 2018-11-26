@@ -8,8 +8,9 @@ import java.util.List;
 
 public class ActivityRepo {
 
-    public static final String DATABASE_URL = "jdbc:postgresql://localhost:5432/";
-    public static final String DATABASE_NAME = "hlogg";
+//    public static final String DATABASE_URL = "jdbc:postgresql://localhost:5432/";
+    public static final String DATABASE_URL = System.getenv("JDBC_DATABASE_URL");
+    public static final String DATABASE_USER_NAME = "hlogg";
     public static final String TABLE_NAME_ACTIVITY_RECORDS = "activity_records";
 
     public ActivityRepo() {
@@ -20,7 +21,7 @@ public class ActivityRepo {
         ArrayList<Activity> activitiesList = new ArrayList<>();
 
         try {
-                Connection connection = DriverManager.getConnection(DATABASE_URL+DATABASE_NAME);
+                Connection connection = DriverManager.getConnection(DATABASE_URL);
 
             Statement statement = connection.createStatement();
             String query = "SELECT * FROM activities";
@@ -49,7 +50,7 @@ public class ActivityRepo {
 
     public Activity getActivityById(int activityId){
         try {
-            Connection connection = DriverManager.getConnection(DATABASE_URL+DATABASE_NAME);
+            Connection connection = DriverManager.getConnection(DATABASE_URL);
             Statement statement = connection.createStatement();
             String query = "SELECT * FROM activities WHERE activity_id = " + activityId + ";";
             ResultSet resultSet = statement.executeQuery(query);
