@@ -3,6 +3,7 @@ package com.hlogg.hloggbe;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+import java.net.URISyntaxException;
 import java.sql.*;
 import java.time.LocalDate;
 import java.time.temporal.WeekFields;
@@ -29,6 +30,11 @@ public class HloggBeApplication {
         boolean activitiesIsInserted = insertActivities();
 	}
 
+	private static Connection getConnection() throws URISyntaxException, SQLException {
+		String dbUrl = System.getenv("JDBC_DATABASE_URL");
+		return DriverManager.getConnection(dbUrl);
+	}
+
 	private static boolean createDbIfNotExist() {
 		Logger logger = Logger.getLogger("db-logger");
 
@@ -36,7 +42,7 @@ public class HloggBeApplication {
 
 			logger.info("Trying to create database with name --hlogg--. If it already exists, then it's all good..");
 
-			Connection connection = DriverManager.getConnection(DATABASE_URL, "woldena", "");
+			Connection connection = getConnection();
 			Statement statement = connection.createStatement();
 			String sql = String.format("CREATE DATABASE %s;", DATABASE_NAME);
 			statement.executeUpdate(sql);
@@ -45,7 +51,7 @@ public class HloggBeApplication {
 			connection.close();
 			return true;
 
-		} catch (SQLException sql_e){
+		} catch (SQLException sql_e ){
 			if (sql_e.getMessage().equals("ERROR: database \"hlogg\" already exists")){
 				logger.info(sql_e.getMessage().toString());
 				return true;
@@ -53,6 +59,9 @@ public class HloggBeApplication {
 				logger.info(sql_e.getMessage());
 				return false;
 			}
+		} catch (URISyntaxException e) {
+			e.printStackTrace();
+			return false;
 		}
 	}
 
@@ -63,7 +72,7 @@ public class HloggBeApplication {
 		try {
 			createTablesIfNotExistLogger.info("Creating tables if they don't already exist...");
 
-			Connection connection = DriverManager.getConnection((DATABASE_URL));
+			Connection connection = getConnection();
 
 			Statement statement1 = connection.createStatement();
 			String sql1 = "CREATE TABLE activities (" +
@@ -89,8 +98,10 @@ public class HloggBeApplication {
 			statement2.close();
 			connection.close();
 
-		} catch (SQLException sql_e){
+		} catch (SQLException sql_e ){
 			System.out.println(sql_e.getMessage().toString());
+		} catch (URISyntaxException e){
+			return false;
 		}
 		return true;
 	}
@@ -103,7 +114,7 @@ public class HloggBeApplication {
 
         try {
             insertActivitiesLogger.info("Inserting activities into activities table");
-            Connection connection = DriverManager.getConnection(DATABASE_URL);
+            Connection connection = getConnection();
             Statement statement = connection.createStatement();
             String sql = "SELECT * FROM activities";
             ResultSet resultSet = statement.executeQuery(sql);
@@ -115,9 +126,11 @@ public class HloggBeApplication {
 
         } catch (SQLException sql_e) {
             insertActivitiesLogger.info(sql_e.toString());
-        }
+        } catch (URISyntaxException e) {
+			e.printStackTrace();
+		}
 
-        if (activitiesTableIsEmpty){
+		if (activitiesTableIsEmpty){
             try {
                 insertActivitiesLogger.info("Inserting activities into activities table");
                 Connection connection = DriverManager.getConnection(DATABASE_URL);
